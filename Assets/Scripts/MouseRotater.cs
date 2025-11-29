@@ -2,19 +2,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// Tracked Pose Driver ·|°»´ú XR ¸Ë¸mªº±ÛÂà¨Ã­×§ï¬Û¾÷ªº Local Rotation¡C
-/// ¦Ó³o­Ó class ªº¥\¯à¬OÅª¤J·Æ¹«ªº²¾°Ê¨Ó¥[¤WÃB¥~ªº±ÛÂà¡AÅı§Ú­Ì¥i¦P®É¥Î·Æ¹«©M XR ¸Ë¸m±ÛÂàµø¨¤¡C
+/// Tracked Pose Driver æœƒåµæ¸¬ XR è£ç½®çš„æ—‹è½‰ä¸¦ä¿®æ”¹ç›¸æ©Ÿçš„ Local Rotationã€‚
+/// è€Œé€™å€‹ class çš„åŠŸèƒ½æ˜¯è®€å…¥æ»‘é¼ çš„ç§»å‹•ä¾†åŠ ä¸Šé¡å¤–çš„æ—‹è½‰ï¼Œè®“æˆ‘å€‘å¯åŒæ™‚ç”¨æ»‘é¼ å’Œ XR è£ç½®æ—‹è½‰è¦–è§’ã€‚
 /// </summary>
 [RequireComponent(typeof(Camera))]
 public class MouseRotater : MonoBehaviour
 {
-    // ³]¦¨ static¡AÅı¤Á´«³õ´º«á«O¯dµø¨¤
+    // è¨­æˆ staticï¼Œè®“åˆ‡æ›å ´æ™¯å¾Œä¿ç•™è¦–è§’
     private static float _yaw = 0f; // left / right
     private static float _pitch = 0f; // up / down
     // smooth damp
     private static Vector3 _targetEuler = Vector3.zero;
     private static float _currSmoothVelocity_pitch = 0f;
     private static float _currSmoothVelocity_yaw = 0f;
+    private static float _currSmoothVelocity_roll = 0f;
 
     private InputAction _look;
     public float Sensitivity = 0.1f;
@@ -30,23 +31,24 @@ public class MouseRotater : MonoBehaviour
     {
         Vector2 delta = _look.ReadValue<Vector2>();
 
-        // §ó·s yaw, pitch
+        // æ›´æ–° yaw, pitch
         _yaw += delta.x * Sensitivity; // left / right
         _pitch -= delta.y * Sensitivity; // up / down
 
-        // ¥Ø«e Camera ªº yaw, pitch
+        // ç›®å‰ Camera çš„ yaw, pitch
         var camEuler = transform.localEulerAngles;
         if (camEuler.x > 90)
             camEuler.x = camEuler.x - 360f;
-        // ¦b¬Û¾÷ªº yaw, pitch ¤W¥[¤W·Æ¹«¿é¤Jªº yaw, pitch
+        // åœ¨ç›¸æ©Ÿçš„ yaw, pitch ä¸ŠåŠ ä¸Šæ»‘é¼ è¼¸å…¥çš„ yaw, pitch
         float targetYaw = camEuler.y + _yaw;
         float targetPitch = Mathf.Clamp(camEuler.x + _pitch, -90f, 90f);
-
+        
         _pitch = targetPitch - camEuler.x;
 
-        _targetEuler.x = Mathf.SmoothDampAngle(_targetEuler.x, targetPitch, ref _currSmoothVelocity_pitch, 0.1f);
-        _targetEuler.y = Mathf.SmoothDampAngle(_targetEuler.y, targetYaw, ref _currSmoothVelocity_yaw, 0.1f);
-        _targetEuler.z = camEuler.z;
+        // å‰ä¸€å¹€çš„ target euler å¹³æ»‘çš„ç§»å¾€é€™å¹€çš„ target
+        _targetEuler.x = Mathf.SmoothDampAngle(_targetEuler.x, targetPitch, ref _currSmoothVelocity_pitch, 0.2f);
+        _targetEuler.y = Mathf.SmoothDampAngle(_targetEuler.y, targetYaw, ref _currSmoothVelocity_yaw, 0.2f);
+        _targetEuler.z = Mathf.SmoothDampAngle(_targetEuler.z, camEuler.z, ref _currSmoothVelocity_roll, 0.2f);
 
         transform.parent.localRotation = Quaternion.Euler(_targetEuler) * Quaternion.Inverse(transform.localRotation);
     }
