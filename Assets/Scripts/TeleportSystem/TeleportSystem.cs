@@ -43,11 +43,15 @@ public class TeleportSystem : MonoBehaviour
         if (Point == ExitPoint)
         {
             dest = EntryPoint.transform.position + delta;
+            //execute level
+            GameManager.Instance.computeLevel(TpPointType.EXIT);
         }
         else
         {
             Player.transform.rotation *= Quaternion.Euler(0, 180, 0);
             dest = EntryPoint.transform.position - delta;
+            //execute level
+            GameManager.Instance.computeLevel(TpPointType.ENTRY);
         }
 
         dest.y = Player.transform.position.y;
@@ -64,6 +68,9 @@ public class TeleportSystem : MonoBehaviour
         {
             anim.SetTrigger("Toggle");
         }
+
+        //change room here
+        GameManager.Instance.changeRoom();
     }
 
     public void TriggerOpenDoor()
