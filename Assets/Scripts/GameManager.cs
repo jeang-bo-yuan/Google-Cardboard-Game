@@ -35,20 +35,27 @@ public class GameManager : MonoBehaviour
     public void changeRoom()
     {
         int type = 0;
-        //random
-        int rand = Random.Range(0, 2);
-        if (rand == 0) // normal room
+        
+        if (game_level > 1)
         {
-            type = 0;
-            room_type = 0;
+            //random
+            int rand = Random.Range(0, 2);
+            if (rand == 0) // normal room
+            {
+                type = 0;
+                room_type = 0;
+            }
+            else
+            {
+                rand = Random.Range(1, room_prefabs.Count);
+                type = rand;
+                room_type = 1;
+            }
         }
         else
         {
-            rand = Random.Range(1, room_prefabs.Count);
-            type = rand;
-            room_type = 1;
+            room_type = 0;
         }
-
 
         //delete and instantiate room
         if (current_room != null)

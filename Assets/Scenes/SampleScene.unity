@@ -849,6 +849,8 @@ MonoBehaviour:
   - {fileID: 4547396075145414672, guid: 7e45385ae122e264cb15f54965f998f0, type: 3}
   - {fileID: 4547396075145414672, guid: 9a7c3738335ec864d852b7ef8e832fc6, type: 3}
   - {fileID: 4547396075145414672, guid: 59399a36d98bd124996cd7bec3b6949c, type: 3}
+  - {fileID: 4547396075145414672, guid: 2e300b1d6f2895442b4653ed3691f5cf, type: 3}
+  - {fileID: 4547396075145414672, guid: 46c848715b31db04ab4cf12b58a1c152, type: 3}
   roomParent: {fileID: 1949621051}
   current_room: {fileID: 266410890}
   level_text: {fileID: 546280087}
