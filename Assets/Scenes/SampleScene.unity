@@ -956,8 +956,10 @@ MonoBehaviour:
   - {fileID: 4547396075145414672, guid: 59399a36d98bd124996cd7bec3b6949c, type: 3}
   - {fileID: 4547396075145414672, guid: 2e300b1d6f2895442b4653ed3691f5cf, type: 3}
   - {fileID: 4547396075145414672, guid: 46c848715b31db04ab4cf12b58a1c152, type: 3}
-  - {fileID: 4547396075145414672, guid: 84695ddbe8517c149bf6b14772b2fa26, type: 3}
+  - {fileID: 4547396075145414672, guid: 5d141ea3a71d2784c8cbf892d060f900, type: 3}
   - {fileID: 4547396075145414672, guid: 87bad690f867d694bbb4e7b13b2b4ea9, type: 3}
+  - {fileID: 4547396075145414672, guid: d0f070821d10a1741aa3595909e730b6, type: 3}
+  - {fileID: 4547396075145414672, guid: 535b7c0d19e931a428ebaebc653a2ba4, type: 3}
   roomParent: {fileID: 1949621051}
   current_room: {fileID: 266410890}
   level_text: {fileID: 546280087}
