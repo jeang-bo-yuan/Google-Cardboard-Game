@@ -15,6 +15,9 @@ public class TeleportSystem : MonoBehaviour
     public List<Animator> DoorsToControl;
     private bool IsDoorOpen = true;
 
+    private AudioClip OpenDoorClip;
+    private AudioClip LockDoorClip;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +30,10 @@ public class TeleportSystem : MonoBehaviour
         EntryPoint.GetComponent<BoxCollider>().enabled = true;
         ExitPoint.GetComponent<BoxCollider>().enabled = true;
         DoorPoint.GetComponent<BoxCollider>().enabled = false;
+
+        OpenDoorClip = Resources.Load("Sound/open door") as AudioClip;
+        LockDoorClip = Resources.Load("Sound/lock door") as AudioClip;
+
     }
 
     public void TriggetTeleport(GameObject Player, TeleportPoint Point)
@@ -67,6 +74,9 @@ public class TeleportSystem : MonoBehaviour
         foreach (Animator anim in DoorsToControl)
         {
             anim.SetTrigger("Toggle");
+            var source = anim.GetComponent<AudioSource>();
+            source.clip = LockDoorClip;
+            source.Play();
         }
 
         //change room here
@@ -84,6 +94,9 @@ public class TeleportSystem : MonoBehaviour
         foreach (Animator anim in DoorsToControl)
         {
             anim.SetTrigger("Toggle");
+            var source = anim.GetComponent<AudioSource>();
+            source.clip = OpenDoorClip;
+            source.Play();
         }
     }
 }
