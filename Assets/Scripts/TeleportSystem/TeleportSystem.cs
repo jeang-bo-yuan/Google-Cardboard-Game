@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 開門 -> 進入傳送點 -> 關門 -> 進入開門點
@@ -13,27 +14,33 @@ public class TeleportSystem : MonoBehaviour
     public TeleportPoint ExitPoint;
     public OpenDoorPoint DoorPoint;
     public List<Animator> DoorsToControl;
-    private bool IsDoorOpen = true;
+    private bool IsDoorOpen = false;
 
     private AudioClip OpenDoorClip;
     private AudioClip LockDoorClip;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnEnable()
     {
         if (Instance != null)
             Debug.LogError("超過一個 TeleportSystem 的實例");
 
         Instance = this;
-
-        IsDoorOpen = true;
-        EntryPoint.GetComponent<BoxCollider>().enabled = true;
-        ExitPoint.GetComponent<BoxCollider>().enabled = true;
-        DoorPoint.GetComponent<BoxCollider>().enabled = false;
-
         OpenDoorClip = Resources.Load("Sound/open door") as AudioClip;
         LockDoorClip = Resources.Load("Sound/lock door") as AudioClip;
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        // 等場景載入完成時才載入開門動畫
+        TriggerOpenDoor();
+    }
+
+    void OnDisable()
+    {
+        Instance = null;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void TriggetTeleport(GameObject Player, TeleportPoint Point)
@@ -91,6 +98,7 @@ public class TeleportSystem : MonoBehaviour
         EntryPoint.GetComponent<BoxCollider>().enabled = true;
         ExitPoint.GetComponent<BoxCollider>().enabled = true;
         DoorPoint.GetComponent<BoxCollider>().enabled = false;
+
         foreach (Animator anim in DoorsToControl)
         {
             anim.SetTrigger("Toggle");
