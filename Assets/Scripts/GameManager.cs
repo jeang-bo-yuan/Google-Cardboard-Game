@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum TpPointType
 {
@@ -9,7 +11,7 @@ public enum TpPointType
 }
 
 public class GameManager : MonoBehaviour
-{
+{    
     public static GameManager Instance { get; private set; }
     [SerializeField] private int game_level = 1;
     private int room_type = 0; // 0: normal; 1: abnormal
@@ -18,12 +20,17 @@ public class GameManager : MonoBehaviour
     public GameObject current_room;
     public TextMeshPro level_text;
 
+    public GameObject playerCamera;
+    public GameObject resultPanel;
+    private bool isGameEnded = false;
+
     void Awake()
     {
         if (Instance != null)
             Debug.LogError("more than one GameManager instance");
 
         Instance = this;
+        resultPanel.SetActive(false);
     }
 
     void Start()
@@ -31,7 +38,22 @@ public class GameManager : MonoBehaviour
         game_level = 1;
         changeRoom();
     }
-    
+
+    void Update()
+    {
+        if (game_level == 2 && !isGameEnded) { 
+            isGameEnded = true;
+            
+            MouseWalker walker = FindFirstObjectByType<MouseWalker>();
+            if (walker != null) walker.enabled = false;
+
+            //MouseRotater rotater = FindFirstObjectByType<MouseRotater>();
+            //if (rotater != null) rotater.enabled = false;
+
+            if (resultPanel != null) resultPanel.SetActive(true);
+        }    
+    }
+
     public void changeRoom()
     {
         int type = 0;
@@ -94,4 +116,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void resetGame()
+    {
+        // Scene restart (Best for now)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    public void backToMenu()
+    {
+        // Load menu scene
+        SceneManager.LoadScene("Menu");   
+    }
 }
