@@ -331,6 +331,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49480379}
   m_CullTransparentMesh: 1
+--- !u!1 &156098465 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1919620145596288167, guid: 09bfb6d232b603145baba726b84abc4e, type: 3}
+  m_PrefabInstance: {fileID: 5746354230671991044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &266410889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1760,9 +1765,11 @@ MonoBehaviour:
   - {fileID: 4547396075145414672, guid: 87bad690f867d694bbb4e7b13b2b4ea9, type: 3}
   - {fileID: 4547396075145414672, guid: d0f070821d10a1741aa3595909e730b6, type: 3}
   - {fileID: 4547396075145414672, guid: 535b7c0d19e931a428ebaebc653a2ba4, type: 3}
+  - {fileID: 4547396075145414672, guid: 41cd9717f8a5e804abb163b297f5e385, type: 3}
   roomParent: {fileID: 1949621051}
   current_room: {fileID: 266410890}
   level_text: {fileID: 546280087}
+  ExitHallway: {fileID: 156098465}
   playerCamera: {fileID: 425902141}
   resultPanel: {fileID: 355871841}
 --- !u!4 &1532461963
@@ -2165,7 +2172,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7750558400463685456, guid: 09bfb6d232b603145baba726b84abc4e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

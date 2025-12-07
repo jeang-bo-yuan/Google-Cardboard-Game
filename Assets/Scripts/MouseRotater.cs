@@ -8,14 +8,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Camera))]
 public class MouseRotater : MonoBehaviour
 {
-    // 設成 static，讓切換場景後保留視角
-    private static float _yaw = 0f; // left / right
-    private static float _pitch = 0f; // up / down
+    // 下面 6 個變數若設成 static，則能讓切換場景後保留視角
+    private  float _yaw = 0f; // left / right
+    private  float _pitch = 0f; // up / down
     // smooth damp
-    private static Vector3 _targetEuler = Vector3.zero;
-    private static float _currSmoothVelocity_pitch = 0f;
-    private static float _currSmoothVelocity_yaw = 0f;
-    private static float _currSmoothVelocity_roll = 0f;
+    private  Vector3 _targetEuler = Vector3.zero;
+    private  float _currSmoothVelocity_pitch = 0f;
+    private  float _currSmoothVelocity_yaw = 0f;
+    private  float _currSmoothVelocity_roll = 0f;
 
     private InputAction _look;
     public float Sensitivity = 0.1f;

@@ -74,17 +74,7 @@ public class TeleportSystem : MonoBehaviour
         controller.enabled = true;
 
         // 切換成關門的狀態
-        IsDoorOpen = false;
-        EntryPoint.GetComponent<BoxCollider>().enabled = false;
-        ExitPoint.GetComponent<BoxCollider>().enabled = false;
-        DoorPoint.GetComponent<BoxCollider>().enabled = true;
-        foreach (Animator anim in DoorsToControl)
-        {
-            anim.SetTrigger("Toggle");
-            var source = anim.GetComponent<AudioSource>();
-            source.clip = LockDoorClip;
-            source.Play();
-        }
+        TriggerCloseDoor();
 
         //change room here
         GameManager.Instance.changeRoom();
@@ -95,16 +85,38 @@ public class TeleportSystem : MonoBehaviour
         Debug.Assert(!IsDoorOpen);
 
         IsDoorOpen = true;
-        EntryPoint.GetComponent<BoxCollider>().enabled = true;
-        ExitPoint.GetComponent<BoxCollider>().enabled = true;
-        DoorPoint.GetComponent<BoxCollider>().enabled = false;
+        EntryPoint.gameObject.SetActive(true);
+        ExitPoint.gameObject.SetActive(true);
+        DoorPoint.gameObject.SetActive(false);
 
         foreach (Animator anim in DoorsToControl)
         {
             anim.SetTrigger("Toggle");
-            var source = anim.GetComponent<AudioSource>();
-            source.clip = OpenDoorClip;
-            source.Play();
+            if (anim.TryGetComponent<AudioSource>(out var source))
+            {
+                source.clip = OpenDoorClip;
+                source.Play();
+            }
+        }
+    }
+
+    public void TriggerCloseDoor()
+    {
+        Debug.Assert(IsDoorOpen);
+
+        IsDoorOpen = false;
+        EntryPoint.gameObject.SetActive(false);
+        ExitPoint.gameObject.SetActive(false);
+        DoorPoint.gameObject.SetActive(true);
+
+        foreach (Animator anim in DoorsToControl)
+        {
+            anim.SetTrigger("Toggle");
+            if (anim.TryGetComponent<AudioSource>(out var source))
+            {
+                source.clip = LockDoorClip;
+                source.Play();
+            }
         }
     }
 }
