@@ -12,7 +12,7 @@ public enum TpPointType
 
 public class GameManager : MonoBehaviour
 {   
-    static readonly public int FINAL_ROOM_LEVEL = 3;
+    static readonly public int FINAL_ROOM_LEVEL = 9;
 
     public static GameManager Instance { get; private set; }
     
