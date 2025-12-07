@@ -27,38 +27,18 @@ public class GameManager : MonoBehaviour
 
     public GameObject ExitHallway;
 
-    public GameObject playerCamera;
-    public GameObject resultPanel;
-    private bool isGameEnded = false;
-
     void Awake()
     {
         if (Instance != null)
             Debug.LogError("more than one GameManager instance");
 
         Instance = this;
-        resultPanel.SetActive(false);
     }
 
     void Start()
     {
         game_level = 1;
         changeRoom();
-    }
-
-    void Update()
-    {
-        //if (game_level == 2 && !isGameEnded) { 
-        //    isGameEnded = true;
-            
-        //    MouseWalker walker = FindFirstObjectByType<MouseWalker>();
-        //    if (walker != null) walker.enabled = false;
-
-        //    //MouseRotater rotater = FindFirstObjectByType<MouseRotater>();
-        //    //if (rotater != null) rotater.enabled = false;
-
-        //    if (resultPanel != null) resultPanel.SetActive(true);
-        //}    
     }
 
     public void changeRoom()
