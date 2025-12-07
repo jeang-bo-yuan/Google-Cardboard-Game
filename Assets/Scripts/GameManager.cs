@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
         else if (game_level > 1)
         {
             //random
-            int rand = Random.Range(0, 2);
-            if (rand == 0) // normal room
+            int rand = Random.Range(0, 10);
+            if (rand <= 3) // normal room
             {
                 type = 0;
                 room_type = 0;
