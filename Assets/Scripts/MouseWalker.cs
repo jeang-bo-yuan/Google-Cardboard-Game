@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class MouseWalker : MonoBehaviour
@@ -8,7 +9,7 @@ public class MouseWalker : MonoBehaviour
     public Transform CameraTransform;
     private AudioClip footStep;
     public float stepRate = 0.5f;
-	public float stepCoolDown;
+    public float stepCoolDown;
 
     InputAction _toWalk;
     CharacterController _controller;
@@ -23,19 +24,23 @@ public class MouseWalker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 避免點擊 UI 時觸發走路
+        if (EventSystem.current && EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (_toWalk.IsPressed())
         {
             Vector3 dir = CameraTransform.forward;
             dir.y = 0;
             dir = Speed * Time.deltaTime * dir.normalized;
             stepCoolDown -= Time.deltaTime;
-		if (stepCoolDown < 0f){
-            footStep = Resources.Load("Sound/Footsteps_Tile_Walk_05") as AudioClip;
-            var source = GetComponent<AudioSource>();
-			source.pitch = 1f + Random.Range (-0.2f, 0.2f);
-			source.PlayOneShot (footStep, 0.9f);
-			stepCoolDown = stepRate;
-		}
+            if (stepCoolDown < 0f){
+                footStep = Resources.Load("Sound/Footsteps_Tile_Walk_05") as AudioClip;
+                var source = GetComponent<AudioSource>();
+                source.pitch = 1f + Random.Range (-0.2f, 0.2f);
+                source.PlayOneShot (footStep, 0.9f);
+                stepCoolDown = stepRate;
+            }
             
             _controller.Move(dir);
         }

@@ -16,15 +16,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System.Collections;
 using Google.XR.Cardboard;
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-
 using InputSystemTouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 /// <summary>
@@ -41,25 +41,17 @@ public class VrModeController : MonoBehaviour
     private Camera _mainCamera;
 
     /// <summary>
-    /// Gets a value indicating whether the screen has been touched this frame.
-    /// </summary>
-    private bool _isScreenTouched
-    {
-        get
-        {
-            TouchControl touch = GetFirstTouchIfExists();
-            return touch != null && touch.phase.ReadValue() == InputSystemTouchPhase.Began;
-        }
-    }
-
-    /// <summary>
     /// Gets a value indicating whether the VR mode is enabled.
     /// </summary>
     private bool _isVrModeEnabled
     {
         get
         {
+#if UNITY_EDITOR
+            return false;
+#else
             return XRGeneralSettings.Instance.Manager.isInitializationComplete;
+#endif
         }
     }
 
@@ -68,6 +60,9 @@ public class VrModeController : MonoBehaviour
     /// </summary>
     public void Start()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        gameObject.SetActive(false);
+#else
         // Saves the main camera from the scene.
         _mainCamera = Camera.main;
 
@@ -85,6 +80,7 @@ public class VrModeController : MonoBehaviour
         {
             Api.ScanDeviceParams();
         }
+#endif
     }
 
     /// <summary>
@@ -109,47 +105,17 @@ public class VrModeController : MonoBehaviour
         else
         {
             // TODO(b/171727815): Add a button to switch to VR mode.
-            if (_isScreenTouched)
-            {
-                EnterVR();
-            }
+            //if (_isScreenTouched)
+            //{
+            //    EnterVR();
+            //}
         }
-    }
-
-    /// <summary>
-    /// Checks if the screen has been touched during the current frame.
-    /// </summary>
-    ///
-    /// <returns>
-    /// The first touch of the screen during the current frame. If the screen hasn't been touched,
-    /// returns null.
-    /// </returns>
-    private static TouchControl GetFirstTouchIfExists()
-    {
-        Touchscreen touchScreen = Touchscreen.current;
-        if (touchScreen == null)
-        {
-            return null;
-        }
-
-        if (!touchScreen.enabled)
-        {
-            InputSystem.EnableDevice(touchScreen);
-        }
-
-        ReadOnlyArray<TouchControl> touches = touchScreen.touches;
-        if (touches.Count == 0)
-        {
-            return null;
-        }
-
-        return touches[0];
     }
 
     /// <summary>
     /// Enters VR mode.
     /// </summary>
-    private void EnterVR()
+    public void EnterVR()
     {
         StartCoroutine(StartXR());
         if (Api.HasNewDeviceParams())
